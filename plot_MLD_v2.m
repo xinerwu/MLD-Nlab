@@ -25,7 +25,8 @@ for i=1:length(fileName)
     %ax(i)=subplot(2,2,i);
     ax(i)=nexttile;
     h=m_pcolor(lonmesh,latmesh,data');
-    m_grid('linest','none','xticklabels',[],'xtick',[],'yticklabels',[],'ytick',[],'fontsize',5);
+    %m_grid('linest','none','xticklabels',[],'xtick',[],'yticklabels',[],'ytick',[],'fontsize',5);
+    m_grid('tickdir','out','fontsize',5,'linest','none')
     title(subtitle{i})
     caxis([0 1550])
 end
@@ -33,7 +34,8 @@ for i=3
     load('deBM2023.mat')
     ax(i)=nexttile;
     h=m_pcolor(oriLon,oriLat,MLDwin);
-    m_grid('linest','none','xticklabels',[],'xtick',[],'yticklabels',[],'ytick',[],'fontsize',5);
+    %m_grid('linest','none','xticklabels',[],'xtick',[],'yticklabels',[],'ytick',[],'fontsize',5);
+    m_grid('tickdir','out','fontsize',5,'linest','none')
     title(subtitle{i})
     caxis([0 1550])
 end
@@ -41,7 +43,8 @@ for i=4
     load('Holte2017.mat')
     ax(i)=nexttile;
     h=m_pcolor(lonm,latm,MLDwin);
-    m_grid('linest','none','xticklabels',[],'xtick',[],'yticklabels',[],'ytick',[],'fontsize',5);
+    %m_grid('linest','none','xticklabels',[],'xtick',[],'yticklabels',[],'ytick',[],'fontsize',5);
+    m_grid('tickdir','out','fontsize',5,'linest','none')
     title(subtitle{i})
     caxis([0 1550])
 end
@@ -53,8 +56,8 @@ a.Label.Position=[2, 1600, 0];
 a.Label.Rotation=0;
 a.Layout.Tile='east';
 
-t.Padding = 'tight';
-t.TileSpacing = 'tight';
+t.Padding = 'compact';
+t.TileSpacing = 'compact';
 
 f=gcf;
-exportgraphics(f,'../MLDPlot2.pdf','ContentType','vector')
+exportgraphics(f,'C:\Users\wuxin\OneDrive - UQAM\MLD-MAT\P&P\figs\fig1.pdf','ContentType','vector')

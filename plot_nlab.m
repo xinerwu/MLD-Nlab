@@ -21,7 +21,8 @@ figure;
 set(gcf, 'Position', [100, 100, 850, 400]);
 m_proj('Miller','lat',[-10 85])
 m_coast('patch',[.7 .7 .7],'edgecolor','none');
-m_grid('linest','none','xticklabels',[],'xtick',[],'yticklabels',[],'ytick',[],'fontsize',5);
+%m_grid('linest','none','xticklabels',[],'xtick',[],'yticklabels',[],'ytick',[],'fontsize',5);
+m_grid('tickdir','out','fontsize',5,'linest','none')
 for i=1:1968
     if circle_sizes(i)>0
         cindex=fix(Nlab(i)/1000*length(cmap))+1;
@@ -37,6 +38,6 @@ for ii=1:length(legend_value)
     index_closest_value (ii) = find(abs_diff == min(abs_diff));
 end
 l=legend([h(index_closest_value(1)),h(index_closest_value(2)),h(index_closest_value(3))],'8%', '40%', '80%','Location', 'southwest');
-set(l,'FontSize',11) %this somehow put the dots in the legend into the correct size
+set(l,'FontSize',10) %this somehow put the dots in the legend into the correct size
 f=gcf;
-exportgraphics(f,'fig1.pdf','ContentType','vector')
+exportgraphics(f,'C:\Users\wuxin\OneDrive - UQAM\MLD-MAT\P&P\figs\fig2.pdf','ContentType','vector')
