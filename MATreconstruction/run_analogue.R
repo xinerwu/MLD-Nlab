@@ -9,11 +9,14 @@ env_id <- 2:18
 n.analogues <- 5
 
 modern <- log(dino+1)
-fossil <- modern
+# Remove duplicates in the dinocyst training database
+dup <- c("1101","1102","1100","1105")
+modern <- modern[ !rownames(modern) %in% dup, ]
+mld <- mld[ !rownames(mld) %in% dup, ]
 #fossil <- log(core+1)
 
 # Perform analogue matching
-result <- analog(modern,fossil,method="euclidean")
+#analogues <- analog(modern,fossil,method="euclidean")
 
 # Fit MAT model
 mat_models <- vector("list",length=length(env_id))
@@ -22,13 +25,15 @@ names(mat_models) <- colnames(mld)[env_id]
 c=1
 for (i in env_id) {
   env <- mld[, i]
-  mat_model <- mat(modern,env,method="euclidean",k=n.analogues)
+  mat_model <- mat(modern,env,method="euclidean",k=n.analogues,weighted=TRUE)
   mat_models[[c]] <- mat_model
   c=c+1
 }
-pred_list <- lapply(mat_models,function(model) predict(model,fossil)$predictions$model$predicted[n.analogues, ])
+#pred_list <- lapply(mat_models,function(model) predict(model,k=n.analogues,weighted=TRUE)$predictions$model$predicted[n.analogues, ])
+#pred_matrix <- do.call(cbind,pred_list)
 #pred <- predict(mat_model,fossil,k=5)
 #write.csv(pred$predictions$model$predicted, file = "test1.csv")
-pred_matrix <- do.call(cbind,pred_list)
+pred_matrix <- sapply(mat_models,function(model) model$weighted$est[n.analogues, ])
 colnames(pred_matrix) <- names(mat_models)
-#write.csv(pred_matrix, file = "P4mat.csv")
+write.csv(pred_matrix, file = "BM23recon.csv")
+save.image("./MLD_mat_models.RData")
