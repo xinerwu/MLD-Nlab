@@ -1,10 +1,10 @@
 % Averaging recomputed MLD from PMIP models
 clear
-modelList={'ACCESS-ESM1-5' 'CESM2' 'EC-Earth3' 'EC-Earth3-LR' 'EC-Earth3-Veg' 'FGOALS-f3-L' 'FGOALS-g3' 'GISS-E2-1-G' 'INM-CM4-8' 'IPSL-CM6A-LR' 'MIROC-ES2L' 'MPI-ESM1-2-LR' 'MRI-ESM2-0' 'NESM3' 'NorESM2-LM'};
-%modelList={'bcc-csm1-1' 'CNRM-CM5' 'CSIRO-Mk3L-1-2' 'FGOALS-g2' 'FGOALS-s2' 'GISS-E2-R' 'HadGEM2-CC' 'HadGEM2-ES' 'IPSL-CM5A-LR' 'KCM1-2-2' 'MIROC-ESM' 'MPI-ESM-P' 'MRI-CGCM3'};
+%modelList={'ACCESS-ESM1-5' 'CESM2' 'EC-Earth3' 'EC-Earth3-LR' 'EC-Earth3-Veg' 'FGOALS-f3-L' 'FGOALS-g3' 'GISS-E2-1-G' 'INM-CM4-8' 'IPSL-CM6A-LR' 'MIROC-ES2L' 'MPI-ESM1-2-LR' 'MRI-ESM2-0' 'NESM3' 'NorESM2-LM'};
+modelList={'bcc-csm1-1' 'CNRM-CM5' 'CSIRO-Mk3L-1-2' 'FGOALS-g2' 'FGOALS-s2' 'GISS-E2-R' 'HadGEM2-CC' 'HadGEM2-ES' 'IPSL-CM5A-LR' 'MIROC-ESM' 'MPI-ESM-P' 'MRI-CGCM3'};
 varname='mxl010';
-fileP='./data/';
-%fileP='./PMIP3data/';
+%fileP='./data/';
+fileP='./PMIP3data/';
 
 % create a 1-deg standard grid for averaging
 x=-180:0.5:180;
@@ -36,6 +36,6 @@ for i=1:length(modelList)
     regridData=griddata(nav_lon,nav_lat,fulldata,x,y,'linear'); 
     allmodels(:,:,i)=regridData;
 end
-meanmodels=mean(allmodels,3,'omitnan');
-stdmodels=std(allmodels,0,3,'omitnan');
-save('mean_models.mat')
+meanmodels=mean(allmodels,3);
+stdmodels=std(allmodels,0,3);
+save('mean_models_PMIP3.mat')
