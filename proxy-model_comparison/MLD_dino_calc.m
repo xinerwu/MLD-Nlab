@@ -3,8 +3,8 @@
 % Interpolate to get "baseline" values at core sites
 % Load data
 BDrecon='./mat/BM23recon.csv';
-BDcoord='./mat/coor1968.txt';
-corelist='C:/Users/wuxin/OneDrive - UQAM/PMIP-MLD_comparison/list of cores.xlsx';
+BDcoord='./mat/coor1968_DupCleaned.txt';
+corelist='C:/Users/wuxin/OneDrive - UQAM/PMIP-MLD_comparison/ListofCores_updated.xlsx';
 BDdata=readtable(BDrecon).MLDwin;
 BDlon=readtable(BDcoord).Longitude;
 BDlat=readtable(BDcoord).Latitude;
@@ -38,5 +38,27 @@ for i=1:length(reconlist)
     MH(tableidx)=sixka;
 end
 cores.MLDmidHolocene=MH;
+cores.MLDanomalie=cores.MLDmidHolocene-cores.MLDbaseline;
+
+% Calculate the maximum of the 5.5-6.5 kyr bin
+MH_max=zeros(length(Coredata),1)+NaN;
+for i=1:length(reconlist)
+    file=reconlist(i).name;
+    record=readtable([path,file]);
+    recon=record.MLDwin;
+    age=record{:,1};
+    idx=find(age>=minAge & age<=maxAge);
+    if isempty(idx)
+        [~,idx]=min(abs(age-6));
+        closestVal=age(idx);
+        disp(file); disp(closestVal)
+    end
+    sixka_max=max(recon(idx));
+    corename=extractBefore(file,"_");
+    tableidx=find(contains(cores.shortName,corename));
+    MH_max(tableidx)=sixka_max;
+end
+cores.MLDmidHolocene_max=MH_max;
+
 % Save data
-%writetable(cores,corelist)
+writetable(cores,corelist)

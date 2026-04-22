@@ -3,9 +3,9 @@
 % Interpolate to get "baseline" values at core sites
 % Load data
 BDrecon='./mat/SIrecon.csv';
-BDcoord='./mat/coor1968.txt';
-corelist='C:/Users/wuxin/OneDrive - UQAM/PMIP-MLD_comparison/list of cores.xlsx';
-BDdata=readtable(BDrecon).SIwin;
+BDcoord='./mat/coor1968_DupCleaned.txt';
+corelist='C:/Users/wuxin/OneDrive - UQAM/PMIP-MLD_comparison/ListofCores_updated.xlsx';
+BDdata=readtable(BDrecon).SeaIceWin;
 BDlon=readtable(BDcoord).Longitude;
 BDlat=readtable(BDcoord).Latitude;
 cores=readtable(corelist);
@@ -23,11 +23,12 @@ reconlist=dir([path,'*.csv']);
 MH=zeros(length(Coredata),1)+NaN;
 for i=1:length(reconlist)
     file=reconlist(i).name;
-    record=readtable([path,file]);
-    si1=record.SeaIce1;
-    si2=record.SeaIce2;
-    si3=record.SeaIce3;
-    recon=(si1+si2+si3)/3;
+    record=readtable([path,file],'TreatAsMissing', 'NA');
+    %si1=record.SeaIce1;
+    %si2=record.SeaIce2;
+    %si3=record.SeaIce3;
+    %recon=(si1+si2+si3)/3;
+    recon=record.SeaIceWin;
     age=record{:,1};
     idx=find(age>=minAge & age<=maxAge);
     if isempty(idx)
@@ -41,5 +42,6 @@ for i=1:length(reconlist)
     MH(tableidx)=sixka;
 end
 cores.SImidHolocene=MH;
+cores.SIanomalie=cores.SImidHolocene-cores.SIbaseline;
 % Save data
 writetable(cores,corelist)
