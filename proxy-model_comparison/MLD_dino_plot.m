@@ -1,4 +1,4 @@
-function MLD_dino_plot(ax)
+function MLD_dino_plot(ax,data)
 % Plot model & data MLD anomalies
 axes(ax);
 % general plot settings
@@ -11,19 +11,19 @@ m_proj('Lambert Conformal Conic','lat',[47 85],'long',[-65 15],'rect','on')
 
 % Plot model anomalies as background
 % load data
-load("mean_models.mat","meanmodels","x","y")
+load(data,"meanmodels","x","y")
 h=m_pcolor(x,y,meanmodels);
 hold on
 
 % Plot dino anomalies
 % load data
-corelist='C:/Users/wuxin/OneDrive - UQAM/PMIP-MLD_comparison/list of cores.xlsx';
+corelist='C:/Users/wuxin/OneDrive - UQAM/PMIP-MLD_comparison/ListofCores_updated.xlsx';
 cores=readtable(corelist);
 Corelat=cores.Latitude;
 Corelon=cores.Longitude;
-MH=cores.MLDmidHolocene;
-baseline=cores.MLDbaseline;
-anom_dino=MH-baseline; 
+%MH=cores.MLDmidHolocene;
+%baseline=cores.MLDbaseline;
+anom_dino=cores.MLDanomalie; 
 
 % Rearrange order for plotting
 [~,idx]=sort(abs(anom_dino),'descend');
