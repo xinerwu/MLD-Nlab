@@ -16,13 +16,13 @@ hold on
 
 % Plot dino anomalies
 % load data
-corelist='C:/Users/wuxin/OneDrive - UQAM/PMIP-MLD_comparison/list of cores.xlsx';
+corelist='C:/Users/wuxin/OneDrive - UQAM/PMIP-MLD_comparison/ListofCores_updated.xlsx';
 cores=readtable(corelist);
 Corelat=cores.Latitude;
 Corelon=cores.Longitude;
-MH=cores.SImidHolocene;
-baseline=cores.SIbaseline;
-anom_dino=MH-baseline; 
+%MH=cores.SImidHolocene;
+%baseline=cores.SIbaseline;
+anom_dino=cores.SIanomalie; 
 
 % Rearrange order for plotting
 [~,idx]=sort(abs(anom_dino),'ascend');
@@ -53,4 +53,4 @@ clim([-lim lim]);
 C=colorbar;
 C.Label.String = 'Sea ice anomalies (%)';
 fig=gcf;
-exportgraphics(fig, './plots/formal/FigS4.pdf','ContentType','vector');
+exportgraphics(fig, './plots/revised/FigS4.pdf','ContentType','vector');
