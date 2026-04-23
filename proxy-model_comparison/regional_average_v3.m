@@ -41,6 +41,9 @@ for i=1:length(modelList)
         nav_lon=double(nav_lon);
         nav_lat=double(nav_lat);
     end
+    if strcmp(modelList{i},'KCM1-2-2')==1
+        nav_lon=nav_lon-180;
+    end
     nav_lon(nav_lon>180)=nav_lon(nav_lon>180)-360;
     
     % define masks

@@ -1,7 +1,7 @@
 % Averaging recomputed MLD from PMIP models
 clear
 %modelList={'ACCESS-ESM1-5' 'CESM2' 'EC-Earth3' 'EC-Earth3-LR' 'EC-Earth3-Veg' 'FGOALS-f3-L' 'FGOALS-g3' 'GISS-E2-1-G' 'INM-CM4-8' 'IPSL-CM6A-LR' 'MIROC-ES2L' 'MPI-ESM1-2-LR' 'MRI-ESM2-0' 'NESM3' 'NorESM2-LM'};
-modelList={'bcc-csm1-1' 'CNRM-CM5' 'CSIRO-Mk3L-1-2' 'FGOALS-g2' 'FGOALS-s2' 'GISS-E2-R' 'HadGEM2-CC' 'HadGEM2-ES' 'IPSL-CM5A-LR' 'MIROC-ESM' 'MPI-ESM-P' 'MRI-CGCM3'};
+modelList={'bcc-csm1-1' 'CNRM-CM5' 'CSIRO-Mk3L-1-2' 'FGOALS-g2' 'FGOALS-s2' 'GISS-E2-R' 'HadGEM2-CC' 'HadGEM2-ES' 'IPSL-CM5A-LR' 'KCM1-2-2' 'MIROC-ESM' 'MPI-ESM-P' 'MRI-CGCM3'};
 varname='mxl010';
 %fileP='./data/';
 fileP='./PMIP3data/';
@@ -30,6 +30,9 @@ for i=1:length(modelList)
     if isa(nav_lon,"single")
         nav_lon=double(nav_lon);
         nav_lat=double(nav_lat);
+    end
+    if strcmp(modelList{i},'KCM1-2-2')==1
+        nav_lon=nav_lon-180;
     end
     nav_lon(nav_lon>180)=nav_lon(nav_lon>180)-360;
     % regrid for plotting
