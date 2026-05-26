@@ -5,7 +5,8 @@ varname='SImean';
 fileP='./SIdata/';
 
 figure('Position',[100,100,672,864]);
-m_proj('Miller')
+%m_proj('Miller')
+m_proj('Lambert Conformal Conic','lat',[47 85],'long',[-65 15],'rect','on')
 t=tiledlayout(5,3);
 % create a standard grid for plotting
 x=-180:0.5:180;
@@ -56,7 +57,7 @@ for i=1:length(modelList)
 
     m_contour(x,y,regridData,[15 15],':k','LineWidth',1)
     end
-    m_grid('tickdir','out','fontsize',5,'linest','none');
+    m_grid('tickdir','out','fontsize',5,'linest','none','xtick',[],'ytick',[]);
     m_coast('patch',[.7 .7 .7],'edgecolor','none');
     title(modelList{i})
     hold off
@@ -65,4 +66,4 @@ t.Padding = 'compact';
 t.TileSpacing = 'compact';
 
 fig=gcf;
-exportgraphics(fig,'./plots/formal/FigS3.png')
+exportgraphics(fig,'./plots/revised/FigS3.png')

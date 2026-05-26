@@ -3,9 +3,32 @@ clear
 modelList={'ACCESS-ESM1-5' 'CESM2' 'EC-Earth3' 'EC-Earth3-LR' 'EC-Earth3-Veg' 'FGOALS-f3-L' 'FGOALS-g3' 'GISS-E2-1-G' 'INM-CM4-8' 'IPSL-CM6A-LR' 'MIROC-ES2L' 'MPI-ESM1-2-LR' 'MRI-ESM2-0' 'NESM3' 'NorESM2-LM'};
 varname='SImean';
 fileP='./SIdata/';
+stats=readtable('./Stats/SIpmip4/rmse.csv');
+rmse=stats.rmse;
+kappa=stats.kappa;
+
+% Plot dino anomalies
+% load data
+corelist='C:/Users/wuxin/OneDrive - UQAM/PMIP-MLD_comparison/ListofCores_updated.xlsx';
+cores=readtable(corelist);
+Corelat=cores.Latitude;
+Corelon=cores.Longitude;
+anom_dino=cores.SIanomalie; 
+
+% Rearrange order for plotting
+[~,idx]=sort(abs(anom_dino),'ascend');
+anom_dino=anom_dino(idx);
+Corelon=Corelon(idx);
+Corelat=Corelat(idx);
+
+lim=30;
+dotsize=4.5;
+cmap=cmocean('balance',17);
+%reversed_cmap=flipud(cmap);
 
 figure('Position',[100,100,672,864]);
-m_proj('Miller')
+%m_proj('Miller')
+m_proj('Lambert Conformal Conic','lat',[47 85],'long',[-65 15],'rect','on')
 t=tiledlayout(5,3);
 % create a standard grid for plotting
 x=-180:0.5:180;
@@ -40,22 +63,40 @@ for i=1:length(modelList)
     regridData=griddata(lon(idx),lat(idx),fulldata(idx),x,y,'linear'); 
 
     ax(i)=nexttile;
-    h=m_pcolor(x,y,regridData);    
-    m_grid('tickdir','out','fontsize',5,'linest','none');
-    m_coast('patch',[1 1 1],'edgecolor','none');
+    h=m_pcolor(x,y,regridData);
+    hold on
+    % Plot data points
+    for p=1:length(anom_dino)
+        cindex=fix((anom_dino(p)-(-lim))/(lim-(-lim))*length(cmap))+1;
+        if cindex>length(cmap)
+            cindex=length(cmap);m_line(Corelon(p),Corelat(p),'marker','o','markersize',dotsize,'color','k','linest','none','markerfacecolor',cmap(cindex,:))
+            %m_line(Corelon(i),Corelat(i),'marker','o','color','r','linewi',2,'linest','none','markerfacecolor','w')
+        elseif cindex<1
+            cindex=1;m_line(Corelon(p),Corelat(p),'marker','o','markersize',dotsize,'color','k','linest','none','markerfacecolor',cmap(cindex,:))
+            %m_line(Corelon(i),Corelat(i),'marker','o','color','b','linewi',2,'linest','none','markerfacecolor','w')
+        elseif ~isnan(cindex)==1
+            m_line(Corelon(p),Corelat(p),'marker','o','markersize',dotsize,'color','k','linest','none','markerfacecolor',cmap(cindex,:))
+        end
+    end
+    hold off
+    m_grid('tickdir','out','fontsize',5,'linest','none','xtick',[],'ytick',[]);
+    if strcmp(modelList{i},'GISS-E2-1-G')==1
+        m_coast('patch',[1 1 1],'edgecolor','none');
+    end
     title(modelList{i})
-    clim([-30 30])
+    clim([-lim lim])
+    text(0.02,1,{['RMSE = ',sprintf('%.2f',rmse(i)),' %'],['\kappa = ',sprintf('%.2f',kappa(i)),]},'Units','normalized', ...
+        'HorizontalAlignment','left','VerticalAlignment','top','fontsize',7)
     else
     % for FGOALS-f3-L, because PI siconc is not available
     ax(i)=nexttile;
-    m_grid('tickdir','out','fontsize',5,'linest','none');
+    m_grid('tickdir','out','fontsize',5,'linest','none','xtick',[],'ytick',[]);
     m_coast('patch',[1 1 1],'edgecolor','k');
     title(modelList{i})
     end
 end
-cmap=cmocean('balance',256);
-reversed_cmap=flipud(cmap);
-colormap(reversed_cmap)
+
+colormap(cmap)
 a=colorbar;
 a.Label.String='(%)';
 a.Layout.Tile='south';
@@ -63,4 +104,4 @@ t.Padding = 'compact';
 t.TileSpacing = 'compact';
 
 fig=gcf;
-exportgraphics(fig,'./plots/winter-anom_SIconc.png')
+exportgraphics(fig,'./plots/revised/FigS2.png')

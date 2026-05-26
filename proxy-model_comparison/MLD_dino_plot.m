@@ -47,7 +47,7 @@ end
 hold off
 
 % General plot settings
-m_grid('tickdir','out','fontsize',6,'linest','none');%('linest','none','xticklabels',[],'xtick',[],'yticklabels',[],'ytick',[],'fontsize',5); %('box','on','tickdir','in','ytick',(2|[0 40]));
+m_grid('tickdir','out','fontsize',6,'linest','none','xtick',[],'ytick',[]);%('linest','none','xticklabels',[],'xtick',[],'yticklabels',[],'ytick',[],'fontsize',5); %('box','on','tickdir','in','ytick',(2|[0 40]));
 m_coast('color','k');
 colormap(ax,cmap);
 clim([-lim lim]);
