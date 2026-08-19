@@ -19,10 +19,10 @@ gre_lon=gre_lon(:);
 gre_lat=gre_lat(:);
 
 % calculate regional means
-modelList={'ACCESS-ESM1-5' 'CESM2' 'EC-Earth3' 'EC-Earth3-LR' 'EC-Earth3-Veg' 'FGOALS-f3-L' 'FGOALS-g3' 'GISS-E2-1-G' 'INM-CM4-8' 'IPSL-CM6A-LR' 'MIROC-ES2L' 'MPI-ESM1-2-LR' 'MRI-ESM2-0' 'NESM3' 'NorESM2-LM'};
-fileP='./data/';
-%modelList={'bcc-csm1-1' 'CNRM-CM5' 'CSIRO-Mk3L-1-2' 'FGOALS-g2' 'FGOALS-s2' 'GISS-E2-R' 'HadGEM2-CC' 'HadGEM2-ES' 'IPSL-CM5A-LR' 'KCM1-2-2' 'MIROC-ESM' 'MPI-ESM-P' 'MRI-CGCM3'};
-%fileP='./PMIP3data/';
+%modelList={'ACCESS-ESM1-5' 'CESM2' 'EC-Earth3' 'EC-Earth3-LR' 'EC-Earth3-Veg' 'FGOALS-f3-L' 'FGOALS-g3' 'GISS-E2-1-G' 'INM-CM4-8' 'IPSL-CM6A-LR' 'MIROC-ES2L' 'MPI-ESM1-2-LR' 'MRI-ESM2-0' 'NESM3' 'NorESM2-LM'};
+%fileP='./data/';
+modelList={'bcc-csm1-1' 'CNRM-CM5' 'CSIRO-Mk3L-1-2' 'FGOALS-g2' 'FGOALS-s2' 'GISS-E2-R' 'HadGEM2-CC' 'HadGEM2-ES' 'IPSL-CM5A-LR' 'KCM1-2-2' 'MIROC-ESM' 'MPI-ESM-P' 'MRI-CGCM3'};
+fileP='./PMIP3data/';
 labMH=zeros(12,length(modelList));
 irmMH=labMH;
 greMH=labMH;
@@ -198,7 +198,8 @@ for nmask=1:3
     p=p+1;
     %exportgraphics(gcf,['./plots/fig2/',mask,'PI.png'])
 end
-exportgraphics(fig,'./plots/revised/Fig2_pmip4.pdf','ContentType','vector');
+linkaxes(ax([3 4]),'y')
+exportgraphics(fig,'./plots/revised/Fig2_pmip3.pdf','ContentType','vector');
 
 function add_panel_label(ax, letter)
     text(ax, 0.02, 0.98, letter, ...
